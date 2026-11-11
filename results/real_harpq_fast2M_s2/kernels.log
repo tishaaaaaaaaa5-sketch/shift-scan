@@ -1,0 +1,15 @@
+== ternary_gemv correctness ==
+  O=3072 I=768 B=1: max abs err 7.867e-04  (ref scale 0.34)
+  O=1536 I=1536 B=4: max abs err 6.403e-04  (ref scale 0.34)
+  O=770 I=768 B=8: max abs err 7.894e-04  (ref scale 0.34)
+== integer_shift_scan_step correctness ==
+  int32 state exact match | output max error 3.73e-08
+== shift_scan_step correctness ==
+  state err 4.77e-07 | y err 4.77e-06
+== micro-benchmark: projection GEMV, decode (us/call) ==
+  in_proj-like 768->3.1k     B=1: fp16    35.9 | ternary-triton    99.8 | weight bytes fp16 4.7MB vs packed 0.6MB
+  in_proj-like 768->3.1k     B=8: fp16    36.6 | ternary-triton   624.2 | weight bytes fp16 4.7MB vs packed 0.6MB
+  out_proj-like 1536->768    B=1: fp16    17.4 | ternary-triton    85.9 | weight bytes fp16 2.4MB vs packed 0.3MB
+  out_proj-like 1536->768    B=8: fp16    21.5 | ternary-triton   168.6 | weight bytes fp16 2.4MB vs packed 0.3MB
+  large 4096->8192           B=1: fp16   260.2 | ternary-triton   610.9 | weight bytes fp16 67.1MB vs packed 8.9MB
+  large 4096->8192           B=8: fp16   303.9 | ternary-triton  4854.7 | weight bytes fp16 67.1MB vs packed 8.9MB
