@@ -1,0 +1,92 @@
+{
+ "results": {
+  "lambada_openai": {
+   "name": "lambada_openai",
+   "alias": "lambada_openai",
+   "sample_len": 5153,
+   "perplexity,none": 2717.421226324675,
+   "perplexity_stderr,none": 133.18628511787742,
+   "acc,none": 0.0560838346594217,
+   "acc_stderr,none": 0.00320551368173103
+  },
+  "hellaswag": {
+   "name": "hellaswag",
+   "alias": "hellaswag",
+   "sample_len": 10042,
+   "acc,none": 0.2693686516630153,
+   "acc_stderr,none": 0.0044272514992366,
+   "acc_norm,none": 0.2755427205735909,
+   "acc_norm_stderr,none": 0.00445874235623817
+  },
+  "piqa": {
+   "name": "piqa",
+   "alias": "piqa",
+   "sample_len": 1838,
+   "acc,none": 0.558215451577802,
+   "acc_stderr,none": 0.011586482494310319,
+   "acc_norm,none": 0.5620239390642002,
+   "acc_norm_stderr,none": 0.011575720065593988
+  },
+  "arc_easy": {
+   "name": "arc_easy",
+   "alias": "arc_easy",
+   "sample_len": 2376,
+   "acc,none": 0.33207070707070707,
+   "acc_stderr,none": 0.009663817543072557,
+   "acc_norm,none": 0.33880471380471383,
+   "acc_norm_stderr,none": 0.009711980224301807
+  },
+  "arc_challenge": {
+   "name": "arc_challenge",
+   "alias": "arc_challenge",
+   "sample_len": 1172,
+   "acc,none": 0.1757679180887372,
+   "acc_stderr,none": 0.011122850863120384,
+   "acc_norm,none": 0.21928327645051193,
+   "acc_norm_stderr,none": 0.012091245787615647
+  },
+  "winogrande": {
+   "name": "winogrande",
+   "alias": "winogrande",
+   "sample_len": 1267,
+   "acc,none": 0.5138121546961326,
+   "acc_stderr,none": 0.014047122916440271
+  },
+  "wikitext": {
+   "name": "wikitext",
+   "alias": "wikitext",
+   "sample_len": 62,
+   "word_perplexity,none": 186.7260783744029,
+   "word_perplexity_stderr,none": "N/A",
+   "byte_perplexity,none": 2.659051101775495,
+   "byte_perplexity_stderr,none": "N/A",
+   "bits_per_byte,none": 1.4109115032466013,
+   "bits_per_byte_stderr,none": "N/A"
+  }
+ },
+ "evaluation_protocol": {
+  "lm_eval_tasks": [
+   "lambada_openai",
+   "hellaswag",
+   "piqa",
+   "arc_easy",
+   "arc_challenge",
+   "winogrande",
+   "wikitext"
+  ],
+  "fewshot": 0,
+  "limit": null,
+  "long_context_dataset": "HuggingFaceFW/fineweb-edu",
+  "long_context_subset": "sample-10BT",
+  "long_context_validation_rule": "document_index % 100 == 0",
+  "synthetic_evaluation_data": false,
+  "dtype": "torch.float16"
+ },
+ "loss_by_position": {
+  "0-512": 4.535402297973633,
+  "512-1024": 4.61638069152832,
+  "1024-2048": 4.341900825500488,
+  "2048-4096": 4.496404647827148,
+  "4096-8192": 4.5790324211120605
+ }
+}
