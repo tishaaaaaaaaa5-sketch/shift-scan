@@ -1,0 +1,50 @@
+{
+  "repo_tests": {
+    "ok": true,
+    "rc": 0,
+    "minutes": 0.08,
+    "watchdog_ended_process": false,
+    "log": "/content/shift_scan_advanced_project/shift_scan/results/real_harpq_fast2M_s2/tests.log",
+    "problems": []
+  },
+  "fineweb_calibration": {
+    "ok": true,
+    "rc": 0,
+    "minutes": 1.09,
+    "watchdog_ended_process": false,
+    "log": "/content/shift_scan_advanced_project/shift_scan/results/real_harpq_fast2M_s2/calibration.log",
+    "problems": []
+  },
+  "teacher_eval": {
+    "ok": true,
+    "rc": 0,
+    "minutes": 12.75,
+    "watchdog_ended_process": false,
+    "log": "/content/shift_scan_advanced_project/shift_scan/results/real_harpq_fast2M_s2/teacher_eval.log",
+    "problems": []
+  },
+  "qat_training": {
+    "ok": true,
+    "rc": 0,
+    "minutes": 32.17,
+    "watchdog_ended_process": false,
+    "log": "/content/shift_scan_advanced_project/shift_scan/results/real_harpq_fast2M_s2/qat_training.log",
+    "problems": []
+  },
+  "student_eval": {
+    "ok": true,
+    "rc": 0,
+    "minutes": 17.42,
+    "watchdog_ended_process": false,
+    "log": "/content/shift_scan_advanced_project/shift_scan/results/real_harpq_fast2M_s2/student_eval.log",
+    "problems": []
+  },
+  "kernel_tests": {
+    "ok": true,
+    "rc": 0,
+    "minutes": 0.25,
+    "watchdog_ended_process": false,
+    "log": "/content/shift_scan_advanced_project/shift_scan/results/real_harpq_fast2M_s2/kernels.log",
+    "problems": []
+  }
+}
