@@ -28,9 +28,5 @@ For each run, record and preserve:
 - GPU model, precision mode, batch size and benchmark methodology;
 - exact notebook / script cell sequence and output artifact.
 
-## Current limitations
 
-- The notebook archive contains similarly named variants; compare their contents and outputs before declaring one canonical.
-- The repository does not yet provide a verified pinned dependency lockfile or a tested one-command reproduction script.
-- Large binary output bundles are preserved as research artifacts; document their provenance before treating them as canonical checkpoints.
 - Hardware measurements should be repeated across batch sizes and sequence lengths with warm-up, synchronization and multiple trials before making general performance claims.
