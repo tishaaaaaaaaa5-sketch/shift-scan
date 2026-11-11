@@ -13,7 +13,11 @@ This repository contains research notebooks, a report, output bundles and recove
 
 ## Seed-variance report
 
-The root `report.md` records only two seeds per method for its `student_ppl` analysis and explicitly warns that p-values and spread estimates are unstable at this sample size. It should be presented as exploratory evidence, not as a statistically conclusive ranking. Its perplexity values are from a different evaluation artifact/configuration than the post-training decay comparison in the README.
+The [seed-variance report](seed-variance-report.md) records only two seeds per method for its `student_ppl` analysis and explicitly warns that p-values and spread estimates are unstable at this sample size. Present it as exploratory evidence, not as a statistically conclusive ranking. Its perplexity values are from a different evaluation artifact/configuration than the post-training decay comparison in the README.
+
+## Notebook organization
+
+The canonical controlled validation notebook is `notebooks/validation/ShiftScan_Controlled_Validation.ipynb`. Earlier variants are retained under `notebooks/archive/validation-versions/` so their history is not lost. The roadmap notebook is `notebooks/roadmap/ShiftScan_Research_Roadmap.ipynb`; its earlier predecessor is archived.
 
 ## Before reproducing a result
 
@@ -30,7 +34,7 @@ For each run, record and preserve:
 
 ## Current limitations
 
-- The notebook archive contains similarly named variants; compare their contents and outputs before declaring one canonical.
+- The notebook archive contains historical variants; compare their contents and outputs before treating them as interchangeable.
 - The repository does not yet provide a verified pinned dependency lockfile or a tested one-command reproduction script.
 - Large binary output bundles are preserved as research artifacts; document their provenance before treating them as canonical checkpoints.
 - Hardware measurements should be repeated across batch sizes and sequence lengths with warm-up, synchronization and multiple trials before making general performance claims.

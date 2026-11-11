@@ -89,7 +89,7 @@ The reported TWN recipe used gradual quantization, learned scales and selected f
 | HARPQ | 20.669 | +0.0222 |
 | **Dyadic2** | **20.330** | **+0.0057** |
 
-In this post-training evaluation, Dyadic2 had the smallest reported cross-entropy increase. The paired comparison against Nearest PoT reported a 95% confidence interval of **[-0.0175, -0.0146] nats** for the difference. This statement applies to that specific paired evaluation; it should not be generalized to the separate low-seed training summary in `report.md`.
+In this post-training evaluation, Dyadic2 had the smallest reported cross-entropy increase. The paired comparison against Nearest PoT reported a 95% confidence interval of **[-0.0175, -0.0146] nats** for the difference. This statement applies to that specific paired evaluation; it should not be generalized to the separate low-seed training summary.
 
 ### 3. Layer sensitivity to ternarization
 
@@ -108,27 +108,35 @@ This supports investigating sensitivity-guided mixed precision rather than apply
 | FP16 projection | 0.159 ms |
 | Custom ternary Triton projection | 12.98 ms |
 
-The measured ternary kernel was approximately **81.6× slower** in this configuration. Removing multiplications at the mathematical level did not translate into a GPU speedup. A practical implementation would need hardware-aware packing and execution strategies (for example, bit-packed representations, lookup-based methods, or suitable fused kernels), followed by repeatable latency and throughput benchmarks.
+The measured ternary kernel was approximately **81.6× slower** in this configuration. Removing multiplications at the mathematical level did not translate into a GPU speedup. A practical implementation would need hardware-aware packing and execution strategies, followed by repeatable latency and throughput benchmarks.
 
-## Repository guide
+## Repository map
 
-- **Research report PDF** — full project write-up and detailed methodology / discussion.
-- **`ShiftScan_Final_Experiments_Colab.ipynb`** — final Colab experiment notebook.
-- **`ShiftScan_Evaluation_and_Ablation.ipynb`** — evaluation and ablation notebook.
-- **`ShiftScan_Results_Analysis_No_Checkpoint.ipynb`** — results-analysis notebook.
-- **`shift_scan_validation*.ipynb`** — validation notebook variants; compare their contents before deciding which is canonical.
-- **`ShiftScan_HARPQ_*.ipynb`** — HARPQ experiment notebooks for different run configurations.
-- **`shift_scan_kaggle_matrix.ipynb`** — Kaggle experiment notebook.
-- **`report.md`** — separate seed-variance summary; see the caution below.
-- **`*.pt`, `*.jsonl`, `*.zip`** — saved outputs, recovered run records and experiment bundles.
+### Research documents
+- [Full research report (PDF)](docs/Research_Report.pdf)
+- [Reproducibility notes](docs/REPRODUCIBILITY.md)
+- [Seed-variance report](docs/seed-variance-report.md)
 
-The notebook collection currently contains similarly named variants. They are retained rather than deleted until their contents and provenance have been compared. The filenames alone do not establish that two files are interchangeable.
+### Notebooks
+- **Training:** [Final Colab experiments](notebooks/training/ShiftScan_Final_Experiments_Colab.ipynb), [Drive-ready experiment companion](notebooks/training/ShiftScan_Final_Experiments_Colab_DriveFolders.ipynb), [HARPQ 100M Colab](notebooks/training/ShiftScan_HARPQ_100M_Colab.ipynb), [HARPQ 20M Kaggle](notebooks/training/ShiftScan_HARPQ_20M_Kaggle.ipynb)
+- **Evaluation:** [Evaluation and ablation](notebooks/evaluation/ShiftScan_Evaluation_and_Ablation.ipynb), [Controlled validation suite](notebooks/validation/ShiftScan_Controlled_Validation.ipynb)
+- **Analysis:** [Results analysis (no checkpoint)](notebooks/analysis/ShiftScan_Results_Analysis_No_Checkpoint.ipynb), [Kaggle matched matrix](notebooks/analysis/ShiftScan_Kaggle_Matched_Matrix.ipynb)
+- **Roadmap:** [Remaining research experiments](notebooks/roadmap/ShiftScan_Research_Roadmap.ipynb)
+- **Historical notebook variants:** preserved under [notebooks/archive/](notebooks/archive/)
 
-## Reproducibility and interpretation notes
+### Experiment artifacts
+- [Figures](results/figures/)
+- Checkpoint/output bundle: `results/checkpoints/`
+- Recovered run records: `results/recovered_runs/`
+- Original ZIP bundles: `archives/experiment_bundles/`
 
-The root-level `report.md` summarizes a separate `student_ppl` seed-variance analysis with only **two seeds per method**. It explicitly warns that estimates and p-values are unstable at this sample size. Do not use that report as evidence for a statistically significant difference. Its values (around 98–103 PPL) are from a different evaluation artifact / configuration than the post-training decay table above (around 20 PPL); the two tables are not directly comparable.
+The historical ZIP bundles and older notebook variants are retained for provenance. Exact duplicate copies of the checkpoint bundle and recovered JSONL were deduplicated by identical Git blob SHA; the canonical copies remain.
 
-For a reproducibility review, see [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md). Before claiming an experiment is fully reproducible, record the exact checkpoint, data split / token stream, tokenizer, evaluation script, sequence length, seed, software versions and hardware for that run.
+## Reproducibility and interpretation
+
+The seed-variance report records only **two seeds per method** for its `student_ppl` analysis and warns that estimates and p-values are unstable at this sample size. Treat it as exploratory evidence, not a statistically conclusive ranking. Its perplexity values (around 98–103) come from a different evaluation artifact/configuration than the post-training decay comparison above (around 20 PPL); the tables are not directly comparable.
+
+Before claiming an experiment is fully reproducible, record the exact checkpoint, data split / token stream, tokenizer, evaluation script, sequence length, seed, software versions and hardware for that run.
 
 ## Limitations
 
@@ -137,7 +145,7 @@ For a reproducibility review, see [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY
 - The separate seed-variance summary has only two seeds per method.
 - Long-context analysis reaches 4,096 tokens.
 - The custom ternary Triton kernel is substantially slower than the FP16 reference in the measured configuration.
-- A broad hardware benchmark (batch sizes, context lengths, throughput, memory and energy) has not been established by the results summarized here.
+- Broad latency, throughput, memory and energy benchmarks have not yet been established.
 
 ## Next steps
 
