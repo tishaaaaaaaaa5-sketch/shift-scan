@@ -1,0 +1,148 @@
+{
+  "timestamp_utc": "2026-11-06T21:46:12Z",
+  "run_name": "real_harpq_fast2M_s2",
+  "variant": "harpq",
+  "seed": 2,
+  "protocol": "fast2M",
+  "source_zip_sha256": "6266e5786b361580d506c69a61de7a3999feef048eb2a82ff86b32f7565cf110",
+  "project_dir": "/content/shift_scan_advanced_project/shift_scan",
+  "environment": {
+    "python": "3.13.16",
+    "torch": "2.14.1+cu130",
+    "cuda": "13.0",
+    "gpu": "Tesla T4",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39"
+  },
+  "stages": {
+    "repo_tests": {
+      "ok": true,
+      "return_code": 0,
+      "minutes": 0.08,
+      "watchdog_ended_process": false,
+      "problems": []
+    },
+    "fineweb_calibration": {
+      "ok": true,
+      "return_code": 0,
+      "minutes": 1.09,
+      "watchdog_ended_process": false,
+      "problems": []
+    },
+    "teacher_eval": {
+      "ok": true,
+      "return_code": 0,
+      "minutes": 12.75,
+      "watchdog_ended_process": false,
+      "problems": []
+    },
+    "qat_training": {
+      "ok": true,
+      "return_code": 0,
+      "minutes": 32.17,
+      "watchdog_ended_process": false,
+      "problems": []
+    },
+    "student_eval": {
+      "ok": true,
+      "return_code": 0,
+      "minutes": 17.42,
+      "watchdog_ended_process": false,
+      "problems": []
+    },
+    "kernel_tests": {
+      "ok": true,
+      "return_code": 0,
+      "minutes": 0.25,
+      "watchdog_ended_process": false,
+      "problems": []
+    }
+  },
+  "all_stages_ok": true,
+  "settings": {
+    "cal_tokens": 200000,
+    "cal_seq_len": 512,
+    "cal_horizon": 128,
+    "max_coefficients": 20000,
+    "qat_tokens": 2000000,
+    "qat_seq_len": 512,
+    "qat_accum": 4,
+    "qat_lr": 0.0001,
+    "val_seqs": 64,
+    "eval_every": 100,
+    "eval_limit": null,
+    "variant_flags": [
+      "--decay",
+      "shift",
+      "--decay-group-size",
+      "1",
+      "--decay-quantizer",
+      "horizon",
+      "--decay-horizon",
+      "128",
+      "--decay-lag-weight",
+      "uniform"
+    ]
+  },
+  "train_command": "/usr/bin/python3 -u train_qat.py --name real_harpq_fast2M_s2 --pretrained state-spaces/mamba2-130m --decay shift --decay-group-size 1 --decay-quantizer horizon --decay-horizon 128 --decay-lag-weight uniform --ternary 1 --group-size 128 --activation-aware 1 --state-weight 0.05 --state-loss-type hybrid --tokens 2000000 --seq-len 512 --micro-bs 1 --accum 4 --lr 0.0001 --dtype fp16 --val-seqs 64 --eval-every 100 --save-every 250 --log-every 10 --seed 2 --out /content/shift_scan_advanced_project/shift_scan/runs",
+  "artifacts": {
+    "calibration.log": {
+      "bytes": 5555,
+      "sha256": "7e66aa9491e42948604bc2bbbcb884360f5c707ea78b15f9625469a014a48c6e"
+    },
+    "fineweb_harpq_calibration.json": {
+      "bytes": 1691,
+      "sha256": "c42f98d21bcf8650342abdca8c7d62d2fba701c46b34a4ccb72f65667412f92d"
+    },
+    "kernel_test_status.json": {
+      "bytes": 1010,
+      "sha256": "57c6dff992620a8fe5e1491a5848335df65a31e38308dd1be63f39fb1023718a"
+    },
+    "kernels.log": {
+      "bytes": 1122,
+      "sha256": "18010f7dffd0cb9001c10d01cd250afa9bff1c5c0cd8a74899a10ac07d1c5afd"
+    },
+    "qat_training.log": {
+      "bytes": 21899,
+      "sha256": "24a2d0bf14ecf7197ed8e1d0d959f8ea8717d28f22d918c4d4fd708a93c5c2c0"
+    },
+    "stage_status.json": {
+      "bytes": 1431,
+      "sha256": "7cf2bfe9a6a5e0da3145ea5e0fb8a9cb8c87f55a59ec72ace867810c5ac85292"
+    },
+    "student_eval.log": {
+      "bytes": 355629,
+      "sha256": "3ebdbd67c013e258f2e47ed9df4a2669e9fcf28fedcd7dd63673082833182624"
+    },
+    "student_fineweb_ppl.json": {
+      "bytes": 2471,
+      "sha256": "c57a6450ed6a7dc04d2cc4c3461e51e2dd19c10ff59be13cd68365bdd70f48d3"
+    },
+    "teacher_eval.log": {
+      "bytes": 276494,
+      "sha256": "20817c908aa9a7bf35a4eedf1a5c5ee9865786e361978d1d558f9c7a3b62a5c1"
+    },
+    "teacher_fineweb_ppl.json": {
+      "bytes": 2480,
+      "sha256": "c6b1ecb7651639b5c1de5e88a2a0bfde5bac1fd208dd964a269b4627dff4c2e4"
+    },
+    "teacher_vs_student.csv": {
+      "bytes": 418,
+      "sha256": "f52a4d0164e4ad48cb418c8144e5bd1919b6bf67077fc8e8c6a5226ca9285d22"
+    },
+    "tests.log": {
+      "bytes": 1885,
+      "sha256": "8a37136a22a5d756cc3843f05d2b3e99fbcd962bfd9a06d6e17ab54f2be37799"
+    }
+  },
+  "kernel": {
+    "correctness_passed": true,
+    "speed_claim_supported": false
+  },
+  "caveats": [
+    "single seed per condition",
+    "pilot scale: 2,000,000 training tokens",
+    "not above chance: arc_challenge acc_norm, winogrande acc",
+    "ternary Triton kernel is not faster than FP16 in the microbenchmark; no speed claim",
+    "protocol 'fast2M' differs from the 10M-token / 305-step pilots; do not pool the two"
+  ]
+}
