@@ -1,0 +1,48 @@
+{
+  "correctness_passed": true,
+  "speed_claim_supported": false,
+  "microbenchmarks": [
+    {
+      "shape": "in_proj-like 768->3.1k",
+      "batch": 1,
+      "fp16_us": 35.9,
+      "ternary_us": 99.8,
+      "ternary_over_fp16": 2.78
+    },
+    {
+      "shape": "in_proj-like 768->3.1k",
+      "batch": 8,
+      "fp16_us": 36.6,
+      "ternary_us": 624.2,
+      "ternary_over_fp16": 17.05
+    },
+    {
+      "shape": "out_proj-like 1536->768",
+      "batch": 1,
+      "fp16_us": 17.4,
+      "ternary_us": 85.9,
+      "ternary_over_fp16": 4.94
+    },
+    {
+      "shape": "out_proj-like 1536->768",
+      "batch": 8,
+      "fp16_us": 21.5,
+      "ternary_us": 168.6,
+      "ternary_over_fp16": 7.84
+    },
+    {
+      "shape": "large 4096->8192",
+      "batch": 1,
+      "fp16_us": 260.2,
+      "ternary_us": 610.9,
+      "ternary_over_fp16": 2.35
+    },
+    {
+      "shape": "large 4096->8192",
+      "batch": 8,
+      "fp16_us": 303.9,
+      "ternary_us": 4854.7,
+      "ternary_over_fp16": 15.97
+    }
+  ]
+}
