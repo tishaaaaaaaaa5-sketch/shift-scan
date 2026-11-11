@@ -171,3 +171,18 @@ Before claiming an experiment is fully reproducible, record the exact checkpoint
 **Shift-Scan · Undergraduate Research Project · November 2026**
 
 </div>
+
+
+## Reproducible Pilot B artifact
+
+The single-seed 2M-token HARPQ run is now separated under [`results/real_harpq_fast2M_s2/`](results/real_harpq_fast2M_s2/), with its run manifest, stage status, teacher/student evaluation JSON, calibration output, test log, kernel log, and run-specific visualizations. See [experiment configurations](docs/EXPERIMENT_CONFIGURATIONS.md) and the [reproduction guide](docs/REPRODUCIBILITY.md) for the exact command, hardware/runtime record, and the distinction between Pilot A (10M tokens) and Pilot B (2M tokens).
+
+### Pilot B visual results
+
+![WikiText word perplexity: teacher vs HARPQ student](results/real_harpq_fast2M_s2/shift-scan-wikitext-ppl.png)
+
+![LAMBADA perplexity: teacher vs HARPQ student](results/real_harpq_fast2M_s2/shift-scan-lambada-ppl.png)
+
+![LAMBADA accuracy: teacher vs HARPQ student](results/real_harpq_fast2M_s2/shift-scan-lambada-accuracy.png)
+
+**Interpretation:** this is one HARPQ seed, not a matched ablation. The student remains far behind the teacher. The custom ternary Triton kernel passed correctness checks but was 2.35×–17.05× slower than FP16 in the recorded T4 microbenchmarks; no speedup or energy claim is supported.
