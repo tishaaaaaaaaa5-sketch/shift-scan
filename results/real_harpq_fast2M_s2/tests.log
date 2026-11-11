@@ -1,0 +1,23 @@
+[ok] chunked scan == naive recurrence
+[ok] parallel == recurrent step  (decay=exp, quantizer=nearest, ternary=False, max err 1.53e-05)
+[ok] parallel == recurrent step  (decay=exp, quantizer=nearest, ternary=True, max err 1.53e-05)
+[ok] parallel == recurrent step  (decay=shift, quantizer=nearest, ternary=False, max err 1.91e-05)
+[ok] parallel == recurrent step  (decay=shift, quantizer=nearest, ternary=True, max err 1.14e-05)
+[ok] parallel == recurrent step  (decay=shift, quantizer=horizon, ternary=False, max err 1.53e-05)
+[ok] parallel == recurrent step  (decay=shift, quantizer=horizon, ternary=True, max err 1.53e-05)
+[ok] parallel == recurrent step  (decay=shift, quantizer=dyadic, ternary=True, max err 2.29e-05)
+[ok] dyadic decay: 14 -> 105 levels, retention RMSE 0.0383 -> 0.0117
+[ok] shift decay: integer k in [1,9], 0<a<1, STE gradients reach dt_bias/A_log
+[ok] ternary: 23% zeros, pack/unpack exact, STE gradient flows, forward == dequantized matmul
+[ok] fp_rows: dt rows stay full precision (sensitivity-study switch works)
+[ok] activation-aware ternary scales update from channel second moments
+[ok] group-wise decay shares integer exponents across adjacent heads
+[ok] fixed-point shift reference and recurrent error bound
+[ok] HARPQ(uniform): objective 0.000852302 -> 0.000848928; retention RMSE 0.0291942 -> 0.0291363
+[ok] HARPQ(log): objective 0.00280027 -> 0.00279865; retention RMSE 0.0291942 -> 0.0291526
+[ok] HARPQ straight-through path propagates finite gradients to dt_bias and A_log
+[ok] untied LM head is represented and produces correctly shaped logits
+[ok] integer fixed-point decode fallback: int32 state, max output error 8.77e-05
+[ok] checkpoint round-trip preserves HARPQ config, untied head and resume metadata
+[info] PoT grid vs pretrained-like decays: mean |a-a_q| = 0.0581; leak ratio (a_q vs a) within [0.7,1.42] for 96% of heads
+all tests passed
