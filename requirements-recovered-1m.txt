@@ -1,0 +1,8 @@
+# Exact package versions recorded in results/recovered_runs/shift_scan_runs_recovered.jsonl
+# Applies only to the recovered 1M-token lrprobe records, not to Pilot B.
+# Python 3.13.16 | CUDA 13.0 | NVIDIA Tesla T4
+torch==2.11.0+cu130
+transformers==5.20.2
+
+# This is a pin fragment, not a complete lockfile: the recovered run records
+# did not preserve versions for datasets, triton, lm-eval, tokenizers, etc.
