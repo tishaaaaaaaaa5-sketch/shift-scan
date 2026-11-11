@@ -32,7 +32,6 @@ For each run, record and preserve:
 - GPU model, precision mode, batch size and benchmark methodology;
 - exact notebook / script cell sequence and output artifact.
 
-## Current limitations
 
 - The notebook archive contains historical variants; compare their contents and outputs before treating them as interchangeable.
 - The repository does not yet provide a verified pinned dependency lockfile or a tested one-command reproduction script.
