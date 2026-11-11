@@ -1,0 +1,76 @@
+{
+  "source": {
+    "model": "state-spaces/mamba2-130m",
+    "dataset": "HuggingFaceFW/fineweb-edu",
+    "subset": "sample-10BT",
+    "validation_rule": "document_index % 100 == 0",
+    "tokens_seen": 200192
+  },
+  "method": {
+    "proposed_name": "HARPQ",
+    "objective": "weighted finite-horizon stationary retention-curve MSE",
+    "horizon": 128,
+    "lag_weight": "uniform",
+    "k_grid": [
+      1,
+      14
+    ],
+    "calibration_dtype": "torch.float16",
+    "sampling_strategy": "uniformly distributed coefficient sampling across processed sequences",
+    "coefficient_cap": 20000
+  },
+  "coefficients": 20000,
+  "fraction_exponents_changed_vs_nearest": 0.027400000020861626,
+  "nearest_one_step": {
+    "one_step_mae": 0.08832800388336182,
+    "retention_mae": 0.015770046040415764,
+    "retention_rmse": 0.03452477976679802,
+    "retention_max_abs": 0.5,
+    "horizon": 128
+  },
+  "horizon_aware": {
+    "one_step_mae": 0.08866231143474579,
+    "retention_mae": 0.01563212275505066,
+    "retention_rmse": 0.03435531631112099,
+    "retention_max_abs": 0.5,
+    "horizon": 128
+  },
+  "objective_cost": {
+    "nearest_mean": 0.0011919587850570679,
+    "horizon_mean": 0.001180288614705205,
+    "relative_reduction": 0.009790749896863349
+  },
+  "k_histogram_nearest": [
+    6595,
+    2795,
+    1691,
+    1299,
+    2267,
+    978,
+    903,
+    968,
+    765,
+    591,
+    461,
+    296,
+    191,
+    200
+  ],
+  "k_histogram_horizon": [
+    6676,
+    2777,
+    1676,
+    1295,
+    2255,
+    933,
+    872,
+    951,
+    783,
+    590,
+    468,
+    313,
+    195,
+    216
+  ],
+  "warning": "Calibration diagnostics only. This does not establish perplexity, speed, energy, or global novelty."
+}
