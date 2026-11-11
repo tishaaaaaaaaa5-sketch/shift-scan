@@ -131,7 +131,7 @@ Recorded final evaluation included WikiText word PPL 186.73, LAMBADA accuracy 5.
 - `.python-version` records the exact Python runtime for the Pilot B manifest.
 - `requirements-t4-pilot-b.txt` pins the exact PyTorch build recorded for Pilot B.
 - The uploaded run bundle did **not** include a complete `pip freeze`; exact versions for Transformers, Datasets, Triton, lm-eval and transitive packages are not available. The base `requirements.txt` therefore remains a set of lower bounds, not a complete lockfile. Capture a full `python -m pip freeze` in the next controlled rerun before claiming a fully pinned environment.
-- A separate earlier manifest recorded PyTorch `2.11.0+cu130`; it is not the environment record for the Pilot B result in this directory. Keep the manifests attached to their own run IDs.
+- A separate recovered 1M-token LR-probe record captures Python `3.13.16`, PyTorch `2.11.0+cu130`, Transformers `5.20.2`, CUDA `13.0`, and a Tesla T4; its two known package pins are listed in [`requirements-recovered-1m.txt`](../requirements-recovered-1m.txt). This is a different run family, not the environment record for Pilot B. Keep the manifests attached to their own run IDs.
 
 ## 6. Reproduction checklist
 
