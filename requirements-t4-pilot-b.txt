@@ -1,0 +1,11 @@
+# Verified environment record for results/real_harpq_fast2M_s2/real_run_manifest.json
+# Python runtime: 3.13.16
+# GPU: NVIDIA Tesla T4
+# CUDA runtime: 13.0
+# Exact PyTorch build recorded by this run:
+torch==2.14.1+cu130
+
+# IMPORTANT:
+# The run bundle did not include `pip freeze` or exact versions for the remaining
+# direct/transitive packages. Install the remaining dependencies from requirements.txt,
+# then capture `python -m pip freeze` before treating this as a complete lockfile.
