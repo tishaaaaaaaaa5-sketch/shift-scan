@@ -6,7 +6,7 @@ All trained student conditions use the same pretrained Mamba-2 130M initializati
 
 | ID | Projections | Purpose |
 |---|---|---|
-| A | Full-precision pretrained reference, original exponential decay | Reference |
+| A | Full-precision student trained with the same distillation schedule | Reference |
 | B | All blocks ternary | Uniform ternary quality gap |
 | C | Two blocks selected by validation sensitivity remain full precision | Sensitivity-guided mixed precision |
 | D | Two random blocks remain full precision | Parameter-matched control |
@@ -23,14 +23,14 @@ Install the repository requirements and lm-evaluation-harness, then run:
 
 Defaults: 2M training tokens per run, seeds 0/1/2, two protected blocks, 512-token sequences, micro-batch 1, accumulation 4. Override with environment variables, e.g. TOKENS=10000000 SEEDS="0 1 2 3 4" bash scripts/run_matched_experiment.sh.
 
-The runner first measures each block's protection gain on the held-out validation shard. It freezes the top two blocks and a seeded random two-block control, then trains B/C/D for each seed and evaluates all seven lm-evaluation-harness tasks. A is evaluated once because the full-precision reference is identical across seeds.
+The runner trains the full-precision A control alongside B/C/D. It first measures each block's protection gain on the held-out validation shard. It freezes the top two blocks and a seeded random two-block control, then trains B/C/D for each seed and evaluates all seven lm-evaluation-harness tasks. A is trained and evaluated separately for each seed, with the same initialization, data stream, token budget, and distillation schedule as B/C/D.
 
 ## Interpretation
 
 - B worse than A quantifies the ternary quality gap.
 - C better than B indicates a mixed-precision benefit.
 - C better than D tests whether sensitivity-guided allocation beats random allocation at the same protected parameter count.
-- Compare paired seed results and report means and standard deviations. A is one fixed pretrained reference, not a three-seed training distribution.
+- Compare paired seed results and report means and standard deviations. A/B/C/D are all trained for each seed, so report paired per-seed differences.
 - The sensitivity-selection shard is calibration data, not an independent test set.
 - The script does not automatically claim statistical significance. Three seeds are screening evidence.
 

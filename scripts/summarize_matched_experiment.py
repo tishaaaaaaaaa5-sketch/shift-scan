@@ -13,13 +13,13 @@ def main():
     p.add_argument("--output", required=True)
     a = p.parse_args()
     root = Path(a.input_dir)
-    groups = {"A_full_precision_reference": [], "B_uniform_ternary": [],
+    groups = {"A_full_precision_student": [], "B_uniform_ternary": [],
               "C_sensitivity_mixed": [], "D_random_mixed": []}
     for path in sorted(root.glob("*.json")):
         if path.name in {"layer_selection.json", "summary.json"}:
             continue
-        if path.name.startswith("A_full_precision_reference"):
-            key = "A_full_precision_reference"
+        if path.name.startswith("A_full_precision_student_s"):
+            key = "A_full_precision_student"
         elif path.name.startswith("B_uniform_ternary_s"):
             key = "B_uniform_ternary"
         elif path.name.startswith("C_sensitivity_mixed_s"):
@@ -31,7 +31,7 @@ def main():
         groups[key].append(json.loads(path.read_text()))
 
     summary = {"conditions": {}, "comparisons": {
-        "ternary_gap": "B_uniform_ternary minus A_full_precision_reference",
+        "ternary_gap": "B_uniform_ternary minus A_full_precision_student",
         "sensitivity_benefit": "C_sensitivity_mixed minus B_uniform_ternary",
         "sensitivity_vs_random": "C_sensitivity_mixed minus D_random_mixed",
     }}
