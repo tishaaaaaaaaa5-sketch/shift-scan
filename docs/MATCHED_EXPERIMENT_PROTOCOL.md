@@ -1,78 +1,48 @@
-# Matched experiment protocol: reducing the ternary quality gap
+# Matched experiment protocol
 
-This document defines the next controlled experiment. It is a protocol, not a report of completed results.
+This is a proposed protocol, not a report of completed experiments.
 
-## Objective
+## Question and conditions
 
-Measure whether sensitivity-guided mixed precision and improved ternary calibration reduce the language-model quality gap while preserving a clearly specified compression or arithmetic benefit.
+At a fixed token budget and evaluation setup, does sensitivity-guided mixed precision reduce the quality gap relative to uniformly ternary projections?
 
-## Experimental arms
-
-Run every arm from the same pretrained Mamba-2 130M checkpoint, tokenizer, training-token stream, sequence length, optimizer schedule, batch/accumulation configuration, evaluation code and hardware class.
-
-| Arm | Weight representation | Purpose |
+| ID | Condition | Purpose |
 |---|---|---|
-| A. FP reference | FP16/BF16 | Matched quality reference |
-| B. Uniform ternary | Ternary on all eligible target projections | Baseline quantization penalty |
-| C. Activation-aware ternary | Ternary with activation-aware scales | Calibration contribution |
-| D. Sensitivity-guided mixed precision | Ternary except protected high-sensitivity layers | Mixed-precision contribution |
-| E. QAT + mixed precision | Same policy as D, trained with QAT/distillation | Training adaptation contribution |
+| A | FP16/full-precision baseline | Reference quality and runtime |
+| B | Uniform ternary projections | Measure ternary quality gap |
+| C | Sensitivity-guided mixed precision | Test protection of sensitive layers |
+| D | Randomly protected layers, matched protected-parameter budget | Control for simply using more full-precision parameters |
 
-Do not compare runs with different token budgets, sequence lengths, data subsets or evaluation dtypes as if they were matched.
+Use the same Mamba-2 130M initialization, tokenizer, data stream, optimizer schedule, sequence length, token budget, batch/accumulation settings, checkpoint-selection rule, and evaluation code for all conditions.
 
-## Controls and preregistration
+## Controls
 
-Before running:
-1. Freeze the source commit, checkpoint SHA-256, tokenizer revision and dataset shard identifiers.
-2. Freeze all training hyperparameters and evaluation commands.
-3. Select at least three seeds; use the same seed list for every arm.
-4. Record the layer-selection rule before inspecting test results.
-5. Keep validation data for selection and reserve a separate test stream for final reporting.
-6. Do not tune thresholds or choose checkpoints on the final test set.
+- Use at least 3 seeds for screening; target 5+ for stronger estimates.
+- Predefine seeds and publish failed/incomplete runs.
+- Keep train/validation/test token streams disjoint; record source revisions and hashes.
+- Fix calibration data and sensitivity scoring before test evaluation.
+- Match C and D by protected parameter count, not layer count.
+- Use identical benchmark versions, prompts, sample limits, and scoring settings.
+- Report per-seed results, mean ± standard deviation, and paired uncertainty intervals.
+- Do not pool metrics from different token budgets, checkpoints, datasets, or evaluation scripts.
 
-## Required outcomes
+## Outcomes
 
-Report each seed and aggregate mean ± standard deviation for:
-- validation and held-out language-model perplexity;
-- cross-entropy difference against the matched FP reference;
-- long-context loss by position at fixed context lengths;
-- parameter count and effective bits per parameter;
-- checkpoint size and peak memory;
-- prefill throughput and decode tokens/s at fixed batch sizes;
-- median and p95 latency after warm-up;
-- energy or power only when measured with a documented instrument and protocol.
+Primary: held-out validation negative log-likelihood / perplexity.
 
-Report kernel microbenchmarks separately from end-to-end model throughput.
+Secondary: LAMBADA accuracy and perplexity; HellaSwag, PIQA, ARC-Easy, ARC-Challenge, and WinoGrande accuracy; parameter count by precision; checkpoint size; peak memory; throughput and latency; energy only if directly measured; per-layer sensitivity and protected-parameter fraction.
 
-## Layer-sensitivity analysis
+## Analysis
 
-For each eligible projection, record:
-- module name and tensor shape;
-- baseline activation/weight statistics;
-- quantization error and output/state perturbation;
-- validation loss change when quantized individually;
-- cumulative loss change under the selected mixed-precision policy.
+1. B vs A quantifies the uniform ternary gap.
+2. C vs B quantifies the mixed-precision benefit.
+3. C vs D tests whether sensitivity-guided allocation beats a parameter-matched random control.
+4. Report paired per-seed differences and all attempted runs.
 
-Publish the complete layer table, not only selected examples. Define the protection threshold using validation data only.
+## Run manifest
 
-## Statistical reporting
+Record git SHA/dirty status; Python, OS, CUDA, driver, GPU, PyTorch, Triton, Transformers, Datasets, and lm-eval versions; immutable model and dataset revisions; tokenizer revision; file hashes; seed; token count; sequence length; batch and accumulation; optimizer/scheduler; precision and quantization settings; exact command; checkpoint/evaluation hashes; timestamps; exit status; hardware measurements.
 
-Use paired seed-level comparisons where possible. Publish raw per-seed values, confidence intervals and the exact statistical procedure. Three seeds are a minimum exploratory estimate, not a guarantee of high statistical power.
+## Status
 
-## Acceptance criteria
-
-Do not call the quality gap “reduced” unless the matched held-out comparison shows a reproducible improvement over uniform ternary across seeds. Do not claim a speedup unless end-to-end measurements beat the matched FP baseline on the same hardware and workload.
-
-## Run manifest template
-
-Each run should save a machine-readable manifest with:
-- run ID, git commit and source archive hash;
-- model/checkpoint and tokenizer revisions;
-- dataset name, split, shard and checksum;
-- seed, token budget, sequence length and optimizer settings;
-- quantization policy and protected-layer list;
-- Python, PyTorch, CUDA, driver and GPU versions;
-- exact command line and evaluation command;
-- output artifact paths and SHA-256 checksums.
-
-The current repository contains exploratory results with different protocols. This protocol is intended to make the next comparison genuinely matched; it does not retroactively make prior runs comparable.
+No new matched experiment is claimed here. Existing HARPQ Pilot B is a single-seed 2M-token pilot and must remain separate from earlier 10M-token studies. See [environment capture](ENVIRONMENT_CAPTURE.md) and [reproducibility notes](REPRODUCIBILITY.md).
