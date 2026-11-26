@@ -63,7 +63,7 @@ def main():
 
     # Paired per-seed deltas are more informative than subtracting condition means.
     pair_specs = {
-        "ternary_gap": ("B_uniform_ternary", "A_full_precision_student"),
+        "ternary_gap": ("A_full_precision_student", "B_uniform_ternary"),
         "sensitivity_benefit": ("B_uniform_ternary", "C_sensitivity_mixed"),
         "sensitivity_vs_random": ("D_random_mixed", "C_sensitivity_mixed"),
     }
