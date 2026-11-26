@@ -119,7 +119,7 @@ The measured ternary kernel was approximately **81.6× slower** in this configur
 
 ### Notebooks
 
-- **Clean research release:** [Shift-Scan research notebook](notebooks/validation/ShiftScan_Research_Notebook_Clean.ipynb) — failed exploratory cells removed; consolidated 20-capture INT32/Mamba state-passing integration check added. The new CUDA/Triton check is pending execution.
+- **Clean research release:** [Shift-Scan research notebook](notebooks/validation/ShiftScan_Research_Notebook_Clean.ipynb) — failed exploratory cells removed; the notebook focuses on the completed experiments and analyses.
 - **Training:** [Final Colab experiments](notebooks/training/ShiftScan_Final_Experiments_Colab.ipynb), [Drive-ready experiment companion](notebooks/training/ShiftScan_Final_Experiments_Colab_DriveFolders.ipynb), [HARPQ 100M Colab](notebooks/training/ShiftScan_HARPQ_100M_Colab.ipynb), [HARPQ 20M Kaggle](notebooks/training/ShiftScan_HARPQ_20M_Kaggle.ipynb)
 - **Evaluation:** [Evaluation and ablation](notebooks/evaluation/ShiftScan_Evaluation_and_Ablation.ipynb), [Controlled validation suite](notebooks/validation/ShiftScan_Controlled_Validation.ipynb)
 - **Analysis:** [Results analysis (no checkpoint)](notebooks/analysis/ShiftScan_Results_Analysis_No_Checkpoint.ipynb), [Kaggle matched matrix](notebooks/analysis/ShiftScan_Kaggle_Matched_Matrix.ipynb)
