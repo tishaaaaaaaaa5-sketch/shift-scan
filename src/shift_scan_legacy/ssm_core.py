@@ -62,6 +62,7 @@ class QuantConfig:
     integer_state: bool = False  # decode-only fixed-point state; requires shift decay
     state_frac_bits: int = 20
     check_integer_overflow: bool = False  # debug-only; synchronizes GPU each decode step
+    fp_layers: str = ""  # comma-separated zero-based blocks whose in_proj and out_proj stay full precision
 
 
 def ste_round(x):
@@ -224,25 +225,27 @@ class GatedRMSNorm(nn.Module):
         return (yf * torch.rsqrt(yf.pow(2).mean(-1, keepdim=True) + self.eps) * self.weight.float()).to(y.dtype)
 
 
-def _linear(i, o, qcfg: QuantConfig, mcfg: ModelConfig, is_in_proj):
-    if not qcfg.ternary or (not is_in_proj and not qcfg.quantize_out_proj):
+def _linear(i, o, qcfg: QuantConfig, mcfg: ModelConfig, is_in_proj, protect_layer=False):
+    if protect_layer or not qcfg.ternary or (not is_in_proj and not qcfg.quantize_out_proj):
         return nn.Linear(i, o, bias=False)
     fp_rows = make_fp_rows(mcfg, qcfg.fp_rows) if is_in_proj else None
     return TernaryLinear(i, o, qcfg.group_size, fp_rows, qcfg.act_bits, qcfg.activation_aware)
 
 
 class Mamba2Mixer(nn.Module):
-    def __init__(self, mcfg: ModelConfig, qcfg: QuantConfig):
+    def __init__(self, mcfg: ModelConfig, qcfg: QuantConfig, layer_idx=None):
         super().__init__()
         self.m, self.q = mcfg, qcfg
-        self.in_proj = _linear(mcfg.d_model, mcfg.in_proj_out, qcfg, mcfg, True)
+        protected_layers = {int(x.strip()) for x in qcfg.fp_layers.split(",") if x.strip()}
+        protect_layer = layer_idx in protected_layers
+        self.in_proj = _linear(mcfg.d_model, mcfg.in_proj_out, qcfg, mcfg, True, protect_layer)
         self.conv1d = nn.Conv1d(mcfg.conv_dim, mcfg.conv_dim, mcfg.d_conv, groups=mcfg.conv_dim,
                                 padding=mcfg.d_conv - 1, bias=True)
         self.dt_bias = nn.Parameter(torch.zeros(mcfg.nheads))
         self.A_log = nn.Parameter(torch.zeros(mcfg.nheads))
         self.D = nn.Parameter(torch.ones(mcfg.nheads))
         self.norm = GatedRMSNorm(mcfg.d_inner)
-        self.out_proj = _linear(mcfg.d_inner, mcfg.d_model, qcfg, mcfg, False)
+        self.out_proj = _linear(mcfg.d_inner, mcfg.d_model, qcfg, mcfg, False, protect_layer)
         self.lam = 1.0
         self.track_k = False
         self.last_k = None
@@ -382,10 +385,10 @@ class Mamba2Mixer(nn.Module):
 
 
 class Block(nn.Module):
-    def __init__(self, mcfg, qcfg):
+    def __init__(self, mcfg, qcfg, layer_idx=0):
         super().__init__()
         self.norm = RMSNorm(mcfg.d_model)
-        self.mixer = Mamba2Mixer(mcfg, qcfg)
+        self.mixer = Mamba2Mixer(mcfg, qcfg, layer_idx=layer_idx)
 
     def forward(self, x):
         return x + self.mixer(self.norm(x))
@@ -398,7 +401,7 @@ class Backbone(nn.Module):
     def __init__(self, mcfg, qcfg):
         super().__init__()
         self.embedding = nn.Embedding(mcfg.vocab, mcfg.d_model)
-        self.layers = nn.ModuleList([Block(mcfg, qcfg) for _ in range(mcfg.n_layer)])
+        self.layers = nn.ModuleList([Block(mcfg, qcfg, layer_idx=i) for i in range(mcfg.n_layer)])
         self.norm_f = RMSNorm(mcfg.d_model)
 
 

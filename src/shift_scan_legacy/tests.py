@@ -120,6 +120,18 @@ def test_ternary():
     print(f"[ok] ternary: {(q==0).float().mean():.0%} zeros, pack/unpack exact, STE gradient flows, forward == dequantized matmul")
 
 
+def test_layerwise_mixed_precision():
+    q = QuantConfig(ternary=True, group_size=32, fp_layers="1")
+    model = Mamba2LM(tiny_cfg(), q)
+    assert isinstance(model.backbone.layers[0].mixer.in_proj, TernaryLinear)
+    assert isinstance(model.backbone.layers[0].mixer.out_proj, TernaryLinear)
+    assert isinstance(model.backbone.layers[1].mixer.in_proj, torch.nn.Linear)
+    assert not isinstance(model.backbone.layers[1].mixer.in_proj, TernaryLinear)
+    assert isinstance(model.backbone.layers[1].mixer.out_proj, torch.nn.Linear)
+    assert not isinstance(model.backbone.layers[1].mixer.out_proj, TernaryLinear)
+    print("[ok] selected blocks retain full-precision input/output projections")
+
+
 def test_group_decay():
     cfg = tiny_cfg()
     q = QuantConfig(decay="shift", decay_group_size=2, k_max=12)

@@ -39,6 +39,7 @@ def get_args():
     p.add_argument("--activation-aware", type=boolean, default=False,
                    help="use EMA input-channel second moments for ternary group scales")
     p.add_argument("--ternary", type=boolean, default=True)
+    p.add_argument("--fp-layers", default="", help="comma-separated zero-based block indices whose in_proj and out_proj remain full precision")
     p.add_argument("--group-size", type=int, default=128)
     p.add_argument("--fp-rows", default="none", choices=["none", "dt", "bc", "dt+bc"])
     p.add_argument("--quantize-out-proj", type=boolean, default=True)
@@ -235,7 +236,8 @@ def main():
                        quantize_out_proj=a.quantize_out_proj, act_bits=a.act_bits,
                        decay_group_size=a.decay_group_size, activation_aware=a.activation_aware,
                        decay_quantizer=a.decay_quantizer, decay_horizon=a.decay_horizon,
-                       decay_lag_weight=a.decay_lag_weight, dyadic_terms=a.dyadic_terms)
+                       decay_lag_weight=a.decay_lag_weight, dyadic_terms=a.dyadic_terms,
+                       fp_layers=a.fp_layers)
     student, mcfg = load_pretrained(a.pretrained, qcfg)
     teacher, _ = load_pretrained(a.pretrained, QuantConfig())                # exp decay, fp -> the teacher
     student, teacher = student.to(dev), teacher.to(dev).eval()
