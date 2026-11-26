@@ -328,6 +328,7 @@ if __name__ == "__main__":
     test_dyadic_decay()
     test_shift_properties()
     test_ternary()
+    test_layerwise_mixed_precision()
     test_fp_rows()
     test_activation_aware_ternary()
     test_group_decay()
