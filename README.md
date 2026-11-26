@@ -197,3 +197,8 @@ New research planning and reproducibility notes:
 - [Environment capture and lockfile status](docs/ENVIRONMENT_CAPTURE.md)
 - [Portfolio positioning and suggested GitHub topics](docs/PROFILE_AND_TOPICS.md)
 - [Safe source extraction utility](scripts/extract_python_sources.py)
+
+
+## Matched mixed-precision experiment
+
+The runnable four-condition experiment is documented in [the runbook](docs/MATCHED_EXPERIMENT_RUNBOOK.md) and launched with [scripts/run_matched_experiment.sh](scripts/run_matched_experiment.sh). It compares a full-precision distillation control, uniform ternary projections, sensitivity-selected protected blocks, and a parameter-matched random control. It requires a CUDA GPU and has not yet been run; results should be added only after actual execution.

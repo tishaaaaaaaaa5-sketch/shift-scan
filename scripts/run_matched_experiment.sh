@@ -37,8 +37,7 @@ for SEED in $SEEDS; do
   # D: random blocks, matched by protected block and projection parameter count.
   python train_qat.py --name "D_random_mixed_s$SEED" "${COMMON[@]}" --fp-layers "$RAND_LAYERS"
 
-  python eval_lm.py --ckpt "$RUNS/A_full_precision_student_s$SEED/last.pt" --dtype "$DTYPE" \\
-    --out "$OUT/A_full_precision_student_s$SEED.json"
+  python eval_lm.py --ckpt "$RUNS/A_full_precision_student_s$SEED/last.pt" --dtype "$DTYPE" --out "$OUT/A_full_precision_student_s$SEED.json"
   python eval_lm.py --ckpt "$RUNS/B_uniform_ternary_s$SEED/last.pt" --dtype "$DTYPE" \
     --out "$OUT/B_uniform_ternary_s$SEED.json"
   python eval_lm.py --ckpt "$RUNS/C_sensitivity_mixed_s$SEED/last.pt" --dtype "$DTYPE" \
