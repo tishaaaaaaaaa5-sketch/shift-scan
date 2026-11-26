@@ -186,3 +186,14 @@ The single-seed 2M-token HARPQ run is now separated under [`results/real_harpq_f
 ![LAMBADA accuracy: teacher vs HARPQ student](results/real_harpq_fast2M_s2/shift-scan-lambada-accuracy.png)
 
 **Interpretation:** this is one HARPQ seed, not a matched ablation. The student remains far behind the teacher. The custom ternary Triton kernel passed correctness checks but was 2.35×–17.05× slower than FP16 in the recorded T4 microbenchmarks; no speedup or energy claim is supported.
+
+
+## Browse the Python source directly
+
+The core source modules from the original experiment bundle are now available under [`src/shift_scan_legacy/`](src/shift_scan_legacy/), including the Mamba-2 implementation, QAT training, ternary/Triton kernels, decay calibration, evaluation, tests, and benchmarking utilities. These files were extracted from the archived ZIP and preserved as a source snapshot; see the directory README before treating them as an installable package.
+
+New research planning and reproducibility notes:
+- [Matched experiment protocol](docs/MATCHED_EXPERIMENT_PROTOCOL.md)
+- [Environment capture and lockfile status](docs/ENVIRONMENT_CAPTURE.md)
+- [Portfolio positioning and suggested GitHub topics](docs/PROFILE_AND_TOPICS.md)
+- [Safe source extraction utility](scripts/extract_python_sources.py)
